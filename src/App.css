@@ -9,7 +9,7 @@ body {
 h2 {
   color: #333;
   margin-bottom: 20px;
-  text-align: center;
+  text-align: left;
 }
 
 #radar-chart-container {
@@ -224,4 +224,36 @@ select:focus {
 .dropdown-content a.active {
   background-color: #4caf50;
   color: white;
+}
+
+.card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card button {
+  margin-top: 20px;
+  background-color: #ff7373;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chart-icon {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-left: 10px;
 }
