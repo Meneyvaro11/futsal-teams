@@ -14,6 +14,7 @@ const App = () => {
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [selectedPlayerCount, setSelectedPlayerCount] = useState(0);
   const [teams, setTeams] = useState({ team1: [], team2: [] });
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   useEffect(() => {
     fetch(apiUrl)
@@ -63,16 +64,11 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <h2>Creazione squadre equilibrate</h2>
+        <h2>Logo</h2>
       </header>
       <main id="contenitore">
-        <Teams teams={teams} />
-        <button
-          onClick={() => createTeams(sortedAverages, updateTeams)}
-          disabled={selectedPlayerCount !== 10}
-        >
-          Crea Squadre
-        </button>
+        {isButtonClicked && <Teams teams={teams} />}
+
         <h2>Selezione giocatori</h2>
         <input
           type="text"
@@ -80,13 +76,23 @@ const App = () => {
           placeholder="Cerca giocatore..."
           onChange={handleSearchChange}
         />
-
+        <button
+          style={{ marginRight: 10 }}
+          onClick={() => {
+            createTeams(sortedAverages, updateTeams);
+            setIsButtonClicked(true);
+          }}
+          disabled={selectedPlayerCount !== 10}
+        >
+          Crea Squadre
+        </button>
         <button
           style={{ backgroundColor: "#ff7373" }}
           onClick={() => clearPlayerSelection(updatePlayerSelection)}
         >
           Pulisci Selezione
         </button>
+
         <p>Giocatori selezionati: {selectedPlayerCount}/10</p>
         <PlayerList
           players={filteredPlayers}
