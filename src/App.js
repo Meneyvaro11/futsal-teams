@@ -82,14 +82,14 @@ const App = () => {
             marginLeft: 20,
           }}
         >
-          Generazione di squadre equilibrate
+          Generatore di squadre equilibrate
         </h2>
       </header>
       <main id="contenitore">
         {isButtonClicked && <Teams teams={teams} />}
 
         <h2 style={{ fontSize: 20, fontWeight: 400, marginBottom: 50 }}>
-          Seleziona 10 giocatori e genera le squadre
+          Seleziona <b>10 giocatori</b> e genera le squadre
         </h2>
         <input
           type="text"
