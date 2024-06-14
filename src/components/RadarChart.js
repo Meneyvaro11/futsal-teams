@@ -31,7 +31,7 @@ const RadarChart = ({ playerData }) => {
       "Passaggio",
       "Visione",
       "Parata",
-      "Visione",
+      "Riflessi",
     ],
     datasets: [
       {
