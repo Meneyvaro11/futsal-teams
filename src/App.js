@@ -7,7 +7,8 @@ import { createTeams, filterPlayers, clearPlayerSelection } from "./utils";
 
 const spreadsheetId = "123rXNTlyQzA3lSJ__TyM43RAUJ6oDCwrUNNm6K4Bh9U";
 const apiKey = "AIzaSyD1TiefCdKw5OROFuNdn62dDjDOTfjGxac";
-const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:P?key=${apiKey}`;
+const apiUrlPlayers = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Giocatori!A1:P?key=${apiKey}`;
+const apiUrlPerformances = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Prestazioni!A1:F?key=${apiKey}`;
 
 const App = () => {
   const [players, setPlayers] = useState([]);
@@ -18,10 +19,16 @@ const App = () => {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   useEffect(() => {
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        const players = data.values.slice(1).map((player) => ({
+    const fetchPlayers = fetch(apiUrlPlayers).then((response) =>
+      response.json()
+    );
+    const fetchPerformances = fetch(apiUrlPerformances).then((response) =>
+      response.json()
+    );
+
+    Promise.all([fetchPlayers, fetchPerformances])
+      .then(([playersData, performancesData]) => {
+        const players = playersData.values.slice(1).map((player) => ({
           player: player[0],
           e: parseFloat(player[4]),
           f: parseFloat(player[5]),
@@ -37,10 +44,29 @@ const App = () => {
           availability: player[15],
           selectedAverage: "average1",
         }));
-        const sortedAverages = players.sort((a, b) => b.average1 - a.average1);
-        setPlayers(players);
+
+        const performances = performancesData.values
+          .slice(1)
+          .reduce((acc, performance) => {
+            const playerName = performance[0];
+            const playerPerformances = performance
+              .slice(1, 6)
+              .map((score) => parseFloat(score));
+            acc[playerName] = playerPerformances;
+            return acc;
+          }, {});
+
+        const playersWithPerformances = players.map((player) => ({
+          ...player,
+          performances: performances[player.player] || [],
+        }));
+
+        const sortedAverages = playersWithPerformances.sort(
+          (a, b) => b.average1 - a.average1
+        );
+        setPlayers(playersWithPerformances);
         setSortedAverages(sortedAverages);
-        setFilteredPlayers(sortedAverages); // Inizialmente, tutti i giocatori sono visibili
+        setFilteredPlayers(sortedAverages);
       })
       .catch((error) =>
         console.error("Errore durante il caricamento dei dati:", error)

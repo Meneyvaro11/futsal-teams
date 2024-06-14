@@ -88,7 +88,17 @@ const PlayerList = ({ players, updatePlayerSelection }) => {
       {selectedPlayerForChart && (
         <div className="card" ref={cardRef}>
           <h3>{selectedPlayerForChart.player}</h3>
-          <RadarChart playerData={selectedPlayerForChart} />
+          <RadarChart
+            playerData={selectedPlayerForChart}
+            performances={[
+              selectedPlayerForChart.b,
+              selectedPlayerForChart.c,
+              selectedPlayerForChart.d,
+              selectedPlayerForChart.e,
+              selectedPlayerForChart.f,
+            ]}
+          />
+
           <button onClick={() => setSelectedPlayerForChart(null)}>
             Chiudi
           </button>

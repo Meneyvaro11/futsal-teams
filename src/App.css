@@ -257,3 +257,20 @@ select:focus {
   border: 1px solid #ddd;
   margin-left: 10px;
 }
+
+.performances {
+  margin-top: 20px;
+}
+
+.performances h4 {
+  margin-bottom: 10px;
+}
+
+.performances ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.performances li {
+  margin-bottom: 5px;
+}
