@@ -67,9 +67,9 @@ const RadarChart = ({ playerData }) => {
   };
 
   const getPerformanceColor = (performance) => {
-    if (performance >= 0 && performance <= 4.5) {
+    if (performance >= 0 && performance <= 5.5) {
       return "red";
-    } else if (performance >= 5.5 && performance <= 6.9) {
+    } else if (performance >= 5.6 && performance <= 6.9) {
       return "orange";
     } else if (performance >= 7 && performance <= 10) {
       return "green";
