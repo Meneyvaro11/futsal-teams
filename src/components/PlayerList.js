@@ -4,6 +4,7 @@ import RadarChart from "./RadarChart"; // Importa il nuovo componente del grafic
 const PlayerList = ({ players, updatePlayerSelection }) => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [selectedPlayerForChart, setSelectedPlayerForChart] = useState(null);
+  const [showLimitMessage, setShowLimitMessage] = useState(false);
   const cardRef = useRef(null);
 
   const handleRowSelection = (player) => {
@@ -15,8 +16,9 @@ const PlayerList = ({ players, updatePlayerSelection }) => {
     if (newSelectedPlayers.length <= 10) {
       setSelectedPlayers(newSelectedPlayers);
       updatePlayerSelection(newSelectedPlayers.length);
+      setShowLimitMessage(false);
     } else {
-      // Implement showSelectionLimitPopup here
+      setShowLimitMessage(true);
     }
   };
 
@@ -41,8 +43,20 @@ const PlayerList = ({ players, updatePlayerSelection }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (showLimitMessage) {
+      const timer = setTimeout(() => {
+        setShowLimitMessage(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLimitMessage]);
+
   return (
     <div id="sorted-list-container">
+      <div>
+        <p>Hai selezionato {selectedPlayers.length} su 10 giocatori</p>
+      </div>
       <ul>
         {players.length > 0 ? (
           players.map((player) => (
@@ -104,6 +118,26 @@ const PlayerList = ({ players, updatePlayerSelection }) => {
           </button>
         </div>
       )}
+      {showLimitMessage ? (
+        <div id="sorted-list-container">
+          {showLimitMessage && (
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "10px",
+                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              Hai già selezionato 10 giocatori
+            </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };
